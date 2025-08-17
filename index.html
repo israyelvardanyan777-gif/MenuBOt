@@ -1,52 +1,57 @@
 <!DOCTYPE html>
 <html lang="hy">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UraXot Mini | Blockchain Delivery</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<style>
-    * {margin:0;padding:0;box-sizing:border-box;}
-    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#000;color:white;padding:16px;min-height:100vh;}
-    .container{max-width:400px;margin:0 auto;}
-    .header{text-align:center;margin-bottom:24px;padding:20px 0;}
-    .logo{font-size:24px;font-weight:800;color:#00d4aa;margin-bottom:8px;}
-    .tagline{font-size:12px;color:#888;}
-    .step{background:#111;border:1px solid #333;border-radius:12px;padding:20px;margin-bottom:16px;}
-    .step-title{font-size:16px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
-    .step-number{background:#00d4aa;color:#000;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;}
-    .district-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
-    .district-btn,.product-btn{background:#222;border:1px solid #444;color:white;padding:12px;border-radius:8px;cursor:pointer;transition:all 0.2s;text-align:center;font-size:12px;}
-    .district-btn:hover,.product-btn:hover{background:#333;border-color:#555;}
-    .district-btn.selected,.product-btn.selected{background:#00d4aa;color:#000;border-color:#00d4aa;}
-    .product-grid{display:grid;gap:12px;}
-    .product-btn{display:flex;justify-content:space-between;align-items:center;padding:16px;font-size:14px;}
-    .product-weight{font-size:18px;font-weight:700;}
-    .product-price{font-size:20px;font-weight:800;}
-    .wallet-section{text-align:center;}
-    .wallet-address{background:#222;border:1px solid #444;border-radius:8px;padding:12px;font-family:monospace;font-size:11px;word-break:break-all;margin:12px 0;cursor:pointer;}
-    .payment-amount{font-size:28px;font-weight:800;color:#00d4aa;margin:16px 0;}
-    .verify-btn{background:#00d4aa;color:#000;border:none;padding:14px 24px;border-radius:8px;font-weight:600;cursor:pointer;width:100%;transition:all 0.2s;}
-    .verify-btn:disabled{background:#333;color:#666;cursor:not-allowed;}
-    .verify-btn:hover:not(:disabled){background:#00b894;}
-    .status{margin-top:12px;padding:8px 12px;border-radius:6px;font-size:12px;text-align:center;}
-    .status-pending{background:rgba(255,193,7,0.2);color:#ffc107;border:1px solid rgba(255,193,7,0.3);}
-    .status-verified{background:rgba(0,212,170,0.2);color:#00d4aa;border:1px solid rgba(0,212,170,0.3);}
-    .product-image{width:100%;height:200px;border-radius:8px;object-fit:cover;margin-top:12px;}
-    .image-placeholder{width:100%;height:200px;background:#222;border:1px dashed #444;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-top:12px;text-align:center;color:#666;font-size:12px;}
-    .notification{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#333;color:white;padding:12px 20px;border-radius:8px;font-size:14px;z-index:1000;opacity:0;transition:opacity 0.3s;}
-    .notification.show{opacity:1;}
-    .loading{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2000;opacity:0;visibility:hidden;transition:all 0.3s;}
-    .loading.show{opacity:1;visibility:visible;}
-    .spinner{width:40px;height:40px;border:3px solid #333;border-top:3px solid #00d4aa;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:16px;}
-    @keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UraXot Mini | Blockchain Delivery</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        /* —————— Աղյուսակի ոճերը և UI —————— */
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#000;color:white;min-height:100vh;padding:16px;}
+        .container{max-width:400px;margin:0 auto;}
+        .header{text-align:center;margin-bottom:24px;padding:20px 0;}
+        .logo{font-size:24px;font-weight:800;color:#00d4aa;margin-bottom:8px;}
+        .tagline{font-size:12px;color:#888;}
+        .step{background:#111;border:1px solid #333;border-radius:12px;padding:20px;margin-bottom:16px;}
+        .step-title{font-size:16px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+        .step-number{background:#00d4aa;color:#000;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;}
+        .district-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+        .district-btn{background:#222;border:1px solid #444;color:white;padding:12px 8px;border-radius:8px;cursor:pointer;transition:all 0.2s;font-size:12px;text-align:center;}
+        .district-btn:hover{background:#333;border-color:#555;}
+        .district-btn.selected{background:#00d4aa;color:#000;border-color:#00d4aa;}
+        .product-grid{display:grid;gap:12px;}
+        .product-btn{background:#222;border:1px solid #444;color:white;padding:16px;border-radius:8px;cursor:pointer;transition:all 0.2s;display:flex;justify-content:space-between;align-items:center;}
+        .product-btn:hover{background:#333;border-color:#555;}
+        .product-btn.selected{background:#00d4aa;color:#000;border-color:#00d4aa;}
+        .product-weight{font-size:18px;font-weight:700;}
+        .product-price{font-size:20px;font-weight:800;}
+        .wallet-section{text-align:center;}
+        .wallet-address{background:#222;border:1px solid #444;border-radius:8px;padding:12px;font-family:monospace;font-size:11px;word-break:break-all;margin:12px 0;cursor:pointer;}
+        .payment-amount{font-size:28px;font-weight:800;color:#00d4aa;margin:16px 0;}
+        .verify-btn{background:#00d4aa;color:#000;border:none;padding:14px 24px;border-radius:8px;font-weight:600;cursor:pointer;width:100%;transition:all 0.2s;}
+        .verify-btn:disabled{background:#333;color:#666;cursor:not-allowed;}
+        .verify-btn:hover:not(:disabled){background:#00b894;}
+        .status{margin-top:12px;padding:8px 12px;border-radius:6px;font-size:12px;text-align:center;}
+        .status-pending{background:rgba(255,193,7,0.2);color:#ffc107;border:1px solid rgba(255,193,7,0.3);}
+        .status-verified{background:rgba(0,212,170,0.2);color:#00d4aa;border:1px solid rgba(0,212,170,0.3);}
+        .product-image{width:100%;height:200px;border-radius:8px;object-fit:cover;margin-top:12px;}
+        .image-placeholder{width:100%;height:200px;background:#222;border:1px dashed #444;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-top:12px;text-align:center;color:#666;font-size:12px;}
+        .notification{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#333;color:white;padding:12px 20px;border-radius:8px;font-size:14px;z-index:1000;opacity:0;transition:opacity 0.3s;}
+        .notification.show{opacity:1;}
+        .loading{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2000;opacity:0;visibility:hidden;transition:all 0.3s;}
+        .loading.show{opacity:1;visibility:visible;}
+        .spinner{width:40px;height:40px;border:3px solid #333;border-top:3px solid #00d4aa;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:16px;}
+        @keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+    </style>
 </head>
 <body>
 <div class="container">
-    <div class="header"><div class="logo">UraXot Mini</div><div class="tagline">Blockchain Delivery System</div></div>
-
-    <!-- Step 1 -->
+    <div class="header">
+        <div class="logo">UraXot Mini</div>
+        <div class="tagline">Blockchain Delivery System</div>
+    </div>
+    <!-- Step 1: District -->
     <div class="step">
         <div class="step-title"><div class="step-number">1</div>Ընտրեք շրջանը</div>
         <div class="district-grid">
@@ -58,8 +63,7 @@
             <div class="district-btn" onclick="selectDistrict('Աջափնյակ')">Աջափնյակ</div>
         </div>
     </div>
-
-    <!-- Step 2 -->
+    <!-- Step 2: Product -->
     <div class="step">
         <div class="step-title"><div class="step-number">2</div>Ընտրեք քաշը և գինը</div>
         <div class="product-grid">
@@ -67,75 +71,145 @@
             <div class="product-btn" onclick="selectProduct('1.0g',35)"><div class="product-weight">1.0g</div><div class="product-price">$35</div></div>
         </div>
     </div>
-
-    <!-- Step 3 -->
-    function verifyPayment() {
-    if (!selectedDistrict || !selectedWeight || selectedPrice === 0) {
-        showNotification('❌ Ընտրեք շրջան և ապրանք');
-        return;
-    }
-
-    showLoading(true);
-
-    // Simulate blockchain verification
-    setTimeout(() => {
-        showLoading(false);
-        
-        const statusElement = document.getElementById('paymentStatus');
-        const verifyBtn = document.getElementById('verifyBtn');
-        
-        statusElement.className = 'status status-verified';
-        statusElement.textContent = '✅ Վճարումը հաստատված է';
-        verifyBtn.textContent = '✅ Վճարումը հաջող է';
-        verifyBtn.disabled = true;
-        
-        showNotification('🎉 Վճարումը հաջողությամբ հաստատվեց!');
-        
-        // Send data to Telegram bot
-        if (window.Telegram && window.Telegram.WebApp) {
-            const orderData = {
-                district: selectedDistrict,
-                weight: selectedWeight,
-                price: selectedPrice,
-                paymentVerified: true,
-                timestamp: new Date().toISOString()
-            };
-            window.Telegram.WebApp.sendData(JSON.stringify(orderData));
-        }
-    }, 2000);
-}
-
-    <!-- Step 4 -->
+    <!-- Step 3: Dash Payment -->
+    <div class="step">
+        <div class="step-title"><div class="step-number">3</div>Dash Blockchain վճարում</div>
+        <div class="wallet-section">
+            <div class="wallet-address" id="walletAddress" onclick="copyAddress()">Xj4KqT8n9vR2mL5pW7sA3bC6dE9fG1hI2jK4lM7nO8pQ</div>
+            <div class="payment-amount" id="paymentAmount">$0</div>
+            <button class="verify-btn" id="verifyBtn" onclick="verifyPayment()" disabled>Ստուգել վճարումը</button>
+            <div class="status status-pending" id="paymentStatus">Սպասում է վճարման</div>
+        </div>
+    </div>
+    <!-- Step 4: Product Image -->
     <div class="step">
         <div class="step-title"><div class="step-number">4</div>Ապրանքի նկար</div>
         <div id="imageContainer"><div class="image-placeholder">Ընտրեք շրջան և ապրանք<br>նկարի ցուցադրման համար</div></div>
     </div>
 </div>
-
 <div class="notification" id="notification"></div>
 <div class="loading" id="loading"><div class="spinner"></div><div>Բեռնվում է...</div></div>
 
 <script>
-let selectedDistrict='',selectedWeight='',selectedPrice=0,DASH_ADDRESS='XdUMLEKoxfGVSDYBEQVRyyjbWGq4aGAB83';
+let selectedDistrict='', selectedWeight='', selectedPrice=0;
+
 const productImages={
-  'Կենտրոն':{'0.5g':'https://via.placeholder.com/300x200/008de4/ffffff?text=Կենտրոն+0.5g','1.0g':'https://via.placeholder.com/300x200/0066cc/ffffff?text=Կենտրոն+1.0g'},
-  'Մալաթիա':{'0.5g':'https://via.placeholder.com/300x200/00b894/ffffff?text=Մալաթիա+0.5g','1.0g':'https://via.placeholder.com/300x200/00d4aa/ffffff?text=Մալաթիա+1.0g'},
-  'Կոմիտաս':{'0.5g':'https://via.placeholder.com/300x200/fd79a8/ffffff?text=Կոմիտաս+0.5g','1.0g':'https://via.placeholder.com/300x200/e84393/ffffff?text=Կոմիտաս+1.0g'},
-  'Արաբկիր':{'0.5g':'https://via.placeholder.com/300x200/fdcb6e/ffffff?text=Արաբկիր+0.5g','1.0g':'https://via.placeholder.com/300x200/e17055/ffffff?text=Արաբկիր+1.0g'},
-  'Մասիվ':{'0.5g':'https://via.placeholder.com/300x200/a29bfe/ffffff?text=Մասիվ+0.5g','1.0g':'https://via.placeholder.com/300x200/6c5ce7/ffffff?text=Մասիվ+1.0g'},
-  'Աջափնյակ':{'0.5g':'https://via.placeholder.com/300x200/fd79a8/ffffff?text=Աջափնյակ+0.5g','1.0g':'https://via.placeholder.com/300x200/e84393/ffffff?text=Աջափնյակ+1.0g'}
+'Կենտրոն':{'0.5g':generateSVG('Կենտրոն','0.5g','#008de4'),'1.0g':generateSVG('Կենտրոն','1.0g','#0066cc')},
+'Մալաթիա':{'0.5g':generateSVG('Մալաթիա','0.5g','#00b894'),'1.0g':generateSVG('Մալաթիա','1.0g','#00d4aa')},
+'Կոմիտաս':{'0.5g':generateSVG('Կոմիտաս','0.5g','#fd79a8'),'1.0g':generateSVG('Կոմիտաս','1.0g','#e84393')},
+'Արաբկիր':{'0.5g':generateSVG('Արաբկիր','0.5g','#fdcb6e'),'1.0g':generateSVG('Արաբկիր','1.0g','#e17055')},
+'Մասիվ':{'0.5g':generateSVG('Մասիվ','0.5g','#a29bfe'),'1.0g':generateSVG('Մասիվ','1.0g','#6c5ce7')},
+'Աջափնյակ':{'0.5g':generateSVG('Աջափնյակ','0.5g','#fd79a8'),'1.0g':generateSVG('Աջափնյակ','1.0g','#e84393')}
 };
 
-function showNotification(msg,dur=3000){const n=document.getElementById('notification');n.textContent=msg;n.classList.add('show');setTimeout(()=>{n.classList.remove('show');},dur);}
-function showLoading(show=true){const l=document.getElementById('loading');show?l.classList.add('show'):l.classList.remove('show');}
-function selectDistrict(d){selectedDistrict=d;document.querySelectorAll('.district-btn').forEach(b=>b.classList.remove('selected'));event.target.classList.add('selected');showNotification(`✅ Ընտրված է ${d}`);updateProductImage();updatePaymentSection();}
-function selectProduct(w,p){selectedWeight=w;selectedPrice=p;document.querySelectorAll('.product-btn').forEach(b=>b.classList.remove('selected'));event.target.classList.add('selected');showNotification(`✅ Ընտրված է ${w} - $${p}`);updateProductImage();updatePaymentSection();}
-function updateProductImage(){const c=document.getElementById('imageContainer');if(selectedDistrict&&selectedWeight){const img=productImages[selectedDistrict]?.[selectedWeight];if(img){c.innerHTML=`<img src="${img}" class="product-image"><div style="text-align:center;margin-top:8px;font-size:12px;color:#888;">${selectedDistrict} • ${selectedWeight} • $${(selectedPrice*1.03).toFixed(2)}</div>`;}else{c.innerHTML='<div class="image-placeholder">Նկարը բեռնվում է...</div>'}}else{c.innerHTML='<div class="image-placeholder">Ընտրեք շրջան և ապրանք<br>նկարի ցուցադրման համար</div>'}}
-function updatePaymentSection(){const p=document.getElementById('paymentAmount'),b=document.getElementById('verifyBtn');if(selectedPrice>0){const finalPrice=(selectedPrice*1.03).toFixed(2);p.textContent=`$${finalPrice}`;b.disabled=false;}else{p.textContent='$0';b.disabled=true;}}
-function verifyPayment(){if(!selectedDistrict||!selectedWeight||selectedPrice===0){showNotification('❌ Ընտրեք շրջան և ապրանք');return;}showLoading(true);setTimeout(()=>{showLoading(false);const s=document.getElementById('paymentStatus');const b=document.getElementById('verifyBtn');s.className='status status-verified';s.textContent='✅ Վճարումը հաստատված է';b.textContent='✅ Վճարումը հաջող է';b.disabled=true;showNotification('🎉 Վճարումը հաջողությամբ հաստատվեց!');if(window.Telegram&&window.Telegram.WebApp){const order={district:selectedDistrict,weight:selectedWeight,price:(selectedPrice*1.03).toFixed(2),paymentVerified:true,timestamp:new Date().toISOString()};window.Telegram.WebApp.sendData(JSON.stringify(order));}},2000);}
-function copyAddress(){navigator.clipboard.writeText(DASH_ADDRESS).then(()=>{showNotification('📋 Հասցեն պատճենվեց');});}
-function generateNewWalletAddress(){const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';let a='';for(let i=0;i<34;i++){a+=chars.charAt(Math.floor(Math.random()*chars.length));}DASH_ADDRESS=a;document.getElementById('walletAddress').textContent=DASH_ADDRESS;showNotification('🔄 Նոր wallet հասցե');return a;}
-document.addEventListener('DOMContentLoaded',()=>{showNotification('🚀 Բարի գալուստ UraXot Mini!');setInterval(generateNewWalletAddress,300000);if(window.Telegram&&window.Telegram.WebApp){window.Telegram.WebApp.ready();window.Telegram.WebApp.expand();}});
+if(window.Telegram && window.Telegram.WebApp){window.Telegram.WebApp.ready();window.Telegram.WebApp.expand();}
+
+function generateSVG(district,weight,color){
+const svg=`<svg width="300" height="200" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="grad${district}${weight}" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" style="stop-color:${color};stop-opacity:1"/><stop offset="100%" style="stop-color:${adjustColor(color,-30)};stop-opacity:1"/></linearGradient></defs>
+<rect width="300" height="200" fill="url(#grad${district}${weight})"/>
+<circle cx="150" cy="100" r="60" fill="rgba(255,255,255,0.9)"/>
+<text x="150" y="90" text-anchor="middle" fill="${color}" font-size="14" font-weight="bold">${district}</text>
+<text x="150" y="110" text-anchor="middle" fill="${color}" font-size="18" font-weight="bold">${weight}</text>
+<text x="150" y="130" text-anchor="middle" fill="${adjustColor(color,-20)}" font-size="12">Premium Quality</text>
+</svg>`;
+return 'data:image/svg+xml;base64,'+btoa(unescape(encodeURIComponent(svg)));
+}
+
+function adjustColor(color,amount){
+return '#'+color.replace(/^#/,'').replace(/../g,c=>('0'+Math.min(255,Math.max(0,parseInt(c,16)+amount)).toString(16)).substr(-2));
+}
+
+function showNotification(message,duration=3000){
+const notification=document.getElementById('notification');
+notification.textContent=message;notification.classList.add('show');
+setTimeout(()=>{notification.classList.remove('show');},duration);
+}
+
+function showLoading(show=true){
+const loading=document.getElementById('loading');
+if(show){loading.classList.add('show');}else{loading.classList.remove('show');}
+}
+
+function selectDistrict(district){
+selectedDistrict=district;
+document.querySelectorAll('.district-btn').forEach(btn=>btn.classList.remove('selected'));
+event.target.classList.add('selected');
+showNotification(`✅ Ընտրված է ${district}`);
+updateProductImage();updatePaymentSection();
+}
+
+function selectProduct(weight,price){
+selectedWeight=weight;selectedPrice=price;
+document.querySelectorAll('.product-btn').forEach(btn=>btn.classList.remove('selected'));
+event.target.classList.add('selected');
+showNotification(`✅ Ընտրված է ${weight} - $${price}`);
+updateProductImage();updatePaymentSection();
+}
+
+function updateProductImage(){
+const container=document.getElementById('imageContainer');
+if(selectedDistrict && selectedWeight){
+const imageData=productImages[selectedDistrict]?.[selectedWeight];
+if(imageData){container.innerHTML=`<img src="${imageData}" alt="${selectedDistrict} ${selectedWeight}" class="product-image">
+<div style="text-align:center;margin-top:8px;font-size:12px;color:#888;">${selectedDistrict} • ${selectedWeight} • $${selectedPrice}</div>`;}
+else{container.innerHTML=`<div class="image-placeholder">Նկարը բեռնվում է...<br>${selectedDistrict} - ${selectedWeight}</div>`;}
+}else{container.innerHTML=`<div class="image-placeholder">Ընտրեք շրջան և ապրանք<br>նկարի ցուցադրման համար</div>`;}
+}
+
+function updatePaymentSection(){
+const paymentAmount=document.getElementById('paymentAmount');
+const verifyBtn=document.getElementById('verifyBtn');
+if(selectedPrice>0){paymentAmount.textContent=`$${(selectedPrice*1.03).toFixed(2)}`;verifyBtn.disabled=false;}
+else{paymentAmount.textContent='$0';verifyBtn.disabled=true;}
+}
+
+async function verifyPayment(){
+if(!selectedDistrict||!selectedWeight||selectedPrice===0){showNotification('❌ Ընտրեք շրջան և ապրանք');return;}
+showLoading(true);
+const walletAddress=document.getElementById('walletAddress').textContent;
+const expectedAmount=(selectedPrice*1.03).toFixed(2);
+try{
+const response=await fetch(`https://sochain.com/api/v2/get_address/DASH/${walletAddress}`);
+const data=await response.json();
+let paid=false;
+if(data&&data.data&&data.data.txs){
+for(let tx of data.data.txs){
+if(parseFloat(tx.value)>=expectedAmount){paid=true;break;}
+}}
+showLoading(false);
+const statusElement=document.getElementById('paymentStatus');
+const verifyBtn=document.getElementById('verifyBtn');
+if(paid){
+statusElement.className='status status-verified';
+statusElement.textContent='✅ Վճարումը հաստատված է';
+verifyBtn.textContent='✅ Վճարումը հաջող է';
+verifyBtn.disabled=true;
+showNotification('🎉 Վճարումը հաջողությամբ հաստատվեց!');
+if(window.Telegram&&window.Telegram.WebApp){
+const orderData={
+district:selectedDistrict,
+weight:selectedWeight,
+price:selectedPrice,
+commission:(selectedPrice*0.03).toFixed(2),
+totalPaid:expectedAmount,
+paymentVerified:true,
+timestamp:new Date().toISOString()
+};
+window.Telegram.WebApp.sendData(JSON.stringify(orderData));
+}}else{
+statusElement.className='status status-pending';
+statusElement.textContent='❌ Վճարում չի կատարվել';
+showNotification('⚠️ Վճարումը չի հայտնաբերվել, խնդրում ենք կրկին փորձել։');
+}}catch(err){showLoading(false);console.error(err);showNotification('⚠️ Վճարումը ստուգելն անհնար է, ստուգեք ինտերնետը կամ հասցեն։');}
+}
+
+function copyAddress(){const address=document.getElementById('walletAddress').textContent;navigator.clipboard.writeText(address).then(()=>{showNotification('📋 Հասցեն պատճենվեց');});}
+
+function generateNewWalletAddress(){const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';let address='';for(let i=0;i<34;i++){address+=chars.charAt(Math.floor(Math.random()*chars.length));}document.getElementById('walletAddress').textContent=address;showNotification('🔄 Նոր wallet հասցե');}
+
+document.addEventListener('DOMContentLoaded',()=>{showNotification('🚀 Բարի գալուստ UraXot Mini!');setInterval(generateNewWalletAddress,300000);});
 </script>
 </body>
 </html>
