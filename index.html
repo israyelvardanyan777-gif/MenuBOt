@@ -6,43 +6,49 @@
 <title>Mini App - Dash Վճարում</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        background-color: #121212;
-        color: #ffffff;
-    }
-    .container { display: flex; gap: 20px; padding: 20px; }
-    .left, .right { padding: 20px; border-radius: 12px; }
-    .left { flex: 2; }
-    .right { flex: 1; background-color: #1e1e1e; }
-    .section { background-color: #1e1e1e; border-radius: 12px; padding: 16px; margin-bottom: 20px; }
-    .section-title { font-weight: bold; display: flex; align-items: center; margin-bottom: 12px; }
-    .section-number { background-color: #007bff; color: white; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; margin-right: 8px; }
-    .dash-wallet, #productImageContainer { margin-top: 12px; }
-    .wallet-address, .payment-amount { margin-top: 8px; font-weight: bold; }
-    .status-indicator { margin-top: 8px; padding: 4px 8px; border-radius: 4px; display: inline-flex; align-items: center; }
-    .status-pending { background-color: #ffc107; color: #212529; }
-    .status-paid { background-color: #28a745; color: #ffffff; }
-    .status-failed { background-color: #dc3545; color: #ffffff; }
-    .verify-btn { margin-top: 12px; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; background: #007bff; color: white; }
-    .image-placeholder { border: 1px dashed #ccc; border-radius: 12px; padding: 40px; text-align: center; color: #999; }
-    img { border-radius: 12px; max-width: 100%; }
-    select { width: 100%; padding: 8px; border-radius: 6px; border: none; margin-top: 8px; background: #333; color: #fff; }
-    .price-display { margin-top: 12px; font-weight: bold; }
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    gap: 20px;
+}
+@media(min-width:900px){.container{flex-direction:row;}}
+.left{flex:2; display:flex; flex-direction:column; gap:20px;}
+.right{flex:1; background-color:#1e1e1e; border-radius:12px; padding:20px;}
+.section{background-color:#1e1e1e; border-radius:12px; padding:20px; transition: all 0.3s;}
+.section:hover{box-shadow:0 0 15px rgba(0,123,255,0.5);}
+.section-title{display:flex; align-items:center; margin-bottom:12px; font-weight:bold;}
+.section-number{background-color:#007bff; color:white; width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:50%; margin-right:8px;}
+select{width:100%; padding:10px; border-radius:6px; border:none; background:#333; color:#fff; margin-top:8px; transition:0.3s;}
+select:hover{background:#444;}
+.verify-btn{margin-top:12px; padding:10px 16px; border:none; border-radius:6px; cursor:pointer; background:#007bff; color:#fff; transition:0.3s;}
+.verify-btn:disabled{background:#555; cursor:not-allowed;}
+.image-placeholder{border:2px dashed #555; border-radius:12px; padding:40px; text-align:center; color:#888; transition:0.3s;}
+.image-placeholder i{font-size:32px; margin-bottom:12px; display:block;}
+img{border-radius:12px; max-width:100%; transition:0.3s;}
+.wallet-address, .payment-amount{margin-top:8px; font-weight:bold;}
+.status-indicator{margin-top:8px;padding:6px 12px;border-radius:6px; display:inline-flex; align-items:center;}
+.status-pending{background:#ffc107; color:#212529;}
+.status-paid{background:#28a745; color:#fff;}
+.status-failed{background:#dc3545; color:#fff;}
+.price-display{margin-top:12px; font-weight:bold;}
 </style>
 </head>
 <body>
 
 <div class="container">
     <div class="left">
-        <!-- Step 1: Շրջան -->
+        <!-- Շրջան -->
         <div class="section">
-            <div class="section-title">
-                <div class="section-number">1</div>
-                <i class="fas fa-map-marker-alt"></i>
-                Շրջան
-            </div>
+            <div class="section-title"><div class="section-number">1</div><i class="fas fa-map-marker-alt"></i> Շրջան</div>
             <select id="districtSelect" onchange="updatePrice()">
                 <option value="">Ընտրեք շրջան</option>
                 <option value="Կենտրոն">Կենտրոն</option>
@@ -54,13 +60,9 @@
             </select>
         </div>
 
-        <!-- Step 2: Քաշ + Գին -->
+        <!-- Քաշ + Գին -->
         <div class="section">
-            <div class="section-title">
-                <div class="section-number">2</div>
-                <i class="fas fa-weight"></i>
-                Քաշ + Գին
-            </div>
+            <div class="section-title"><div class="section-number">2</div><i class="fas fa-weight"></i> Քաշ + Գին</div>
             <select id="weightSelect" onchange="updatePrice()">
                 <option value="">Ընտրեք քաշ</option>
                 <option value="0.5G">0.5g / $26</option>
@@ -69,52 +71,33 @@
             <div class="price-display" id="priceDisplay">Գին: $0</div>
         </div>
 
-        <!-- Step 3: Dash blockchain վճարում -->
+        <!-- Dash Blockchain -->
         <div class="section">
-            <div class="section-title">
-                <div class="section-number">3</div>
-                <i class="fab fa-bitcoin"></i>
-                Dash Blockchain վճարում
-            </div>
+            <div class="section-title"><div class="section-number">3</div><i class="fab fa-bitcoin"></i> Dash Blockchain վճարում</div>
             <div class="dash-wallet">
-                <div class="wallet-header">
-                    <div class="wallet-icon">D</div>
-                    <div class="wallet-title">Dash Wallet</div>
-                </div>
+                <div class="wallet-header"><div class="wallet-icon">D</div><div class="wallet-title">Dash Wallet</div></div>
                 <div class="wallet-address" id="walletAddress">XdUMLEKoxfGVSDYBEQVRyyjbWGq4aGAB83</div>
                 <div class="payment-amount" id="paymentAmount">0 DASH</div>
                 <div class="payment-label">Վճարման գումար (3% կոմիսիայով)</div>
-                <div class="status-indicator status-pending" id="paymentStatus">
-                    <i class="fas fa-clock"></i>
-                    Սպասում է վճարման
-                </div>
-                <button class="verify-btn" onclick="verifyPayment()" id="verifyBtn" disabled>
-                    <i class="fas fa-search"></i>
-                    Ստուգել վճարումը
-                </button>
+                <div class="status-indicator status-pending" id="paymentStatus"><i class="fas fa-clock"></i> Սպասում է վճարման</div>
+                <button class="verify-btn" onclick="verifyPayment()" id="verifyBtn" disabled><i class="fas fa-search"></i> Ստուգել վճարումը</button>
             </div>
         </div>
 
-        <!-- Step 4: Նկար -->
+        <!-- Նկար -->
         <div class="section">
-            <div class="section-title">
-                <div class="section-number">4</div>
-                <i class="fas fa-image"></i>
-                Ապրանքի նկար
-            </div>
+            <div class="section-title"><div class="section-number">4</div><i class="fas fa-image"></i> Ապրանքի նկար</div>
             <div id="productImageContainer">
                 <div class="image-placeholder">
                     <div class="placeholder-text">
-                        <i class="fas fa-image" style="font-size: 32px; margin-bottom: 12px; display: block;"></i>
-                        Ընտրեք շրջան և ապրանք<br>
-                        նկարի ավտոմատ ցուցադրման համար
+                        <i class="fas fa-image"></i>
+                        Ընտրեք շրջան և քաշ<br>նկարի ավտոմատ ցուցադրման համար
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Right panel: գին/տեքստ -->
     <div class="right">
         <h3>Pull Ֆունկցիա</h3>
         <ol>
@@ -129,8 +112,8 @@
 <script>
 let selectedDistrict = '';
 let selectedWeight = '';
-let baseAmount = 0; // իրական գումար DASH
-let finalAmount = 0; // 3% կոմիսիայով
+let baseAmount = 0; 
+let finalAmount = 0; 
 let paymentVerified = false;
 
 const DASH_ADDRESS = "XdUMLEKoxfGVSDYBEQVRyyjbWGq4aGAB83";
@@ -138,76 +121,67 @@ const paymentStatus = document.getElementById("paymentStatus");
 const verifyBtn = document.getElementById("verifyBtn");
 const paymentAmountDisplay = document.getElementById("paymentAmount");
 
-// Նկարների տվյալներ
 const productImages = {
-    "Կենտրոն": {"0.5G":"images/kentron_0_5g.jpg","1.0G":"images/kentron_1g.jpg"},
-    "Մասիվ": {"0.5G":"images/masiv_0_5g.jpg","1.0G":"images/masiv_1g.jpg"},
-    "Մալաթիա": {"0.5G":"images/malatia_0_5g.jpg","1.0G":"images/malatia_1g.jpg"},
-    "Կոմիտաս": {"0.5G":"images/komitas_0_5g.jpg","1.0G":"images/komitas_1g.jpg"},
-    "Արաբկիր": {"0.5G":"images/arabkir_0_5g.jpg","1.0G":"images/arabkir_1g.jpg"},
-    "Աջափնյակ": {"0.5G":"images/ajapnyak_0_5g.jpg","1.0G":"images/ajapnyak_1g.jpg"}
+    "Կենտրոն":{"0.5G":"images/kentron_0_5g.jpg","1.0G":"images/kentron_1g.jpg"},
+    "Մասիվ":{"0.5G":"images/masiv_0_5g.jpg","1.0G":"images/masiv_1g.jpg"},
+    "Մալաթիա":{"0.5G":"images/malatia_0_5g.jpg","1.0G":"images/malatia_1g.jpg"},
+    "Կոմիտաս":{"0.5G":"images/komitas_0_5g.jpg","1.0G":"images/komitas_1g.jpg"},
+    "Արաբկիր":{"0.5G":"images/arabkir_0_5g.jpg","1.0G":"images/arabkir_1g.jpg"},
+    "Աջափնյակ":{"0.5G":"images/ajapnyak_0_5g.jpg","1.0G":"images/ajapnyak_1g.jpg"}
 };
 
-function updatePrice() {
+function updatePrice(){
     const districtSelect = document.getElementById("districtSelect");
     const weightSelect = document.getElementById("weightSelect");
     selectedDistrict = districtSelect.value;
     selectedWeight = weightSelect.value;
 
-    if(selectedWeight === "0.5G") baseAmount = 0.026; 
-    else if(selectedWeight === "1.0G") baseAmount = 0.035;
-    else baseAmount = 0;
+    if(selectedWeight==="0.5G") baseAmount=0.026;
+    else if(selectedWeight==="1.0G") baseAmount=0.035;
+    else baseAmount=0;
 
-    // 3% կոմիսիա ավելացնել
-    finalAmount = baseAmount * 1.03;
-    paymentAmountDisplay.innerText = finalAmount.toFixed(6) + " DASH";
+    finalAmount = baseAmount*1.03; 
+    paymentAmountDisplay.innerText = finalAmount.toFixed(6)+" DASH";
+    verifyBtn.disabled = finalAmount===0 || selectedDistrict==='';
 
-    verifyBtn.disabled = finalAmount === 0 || selectedDistrict === '';
     displayProductImage();
 }
 
-function displayProductImage() {
-    const container = document.getElementById("productImageContainer");
-    container.innerHTML = '';
-    if(!selectedDistrict || !selectedWeight) {
-        container.innerHTML = `<div class="image-placeholder"><div class="placeholder-text">
-        <i class="fas fa-image" style="font-size: 32px; margin-bottom: 12px; display: block;"></i>
-        Ընտրեք շրջան և ապրանք<br>նկարի ավտոմատ ցուցադրման համար
+function displayProductImage(){
+    const container=document.getElementById("productImageContainer");
+    container.innerHTML='';
+    if(!selectedDistrict || !selectedWeight){
+        container.innerHTML=`<div class="image-placeholder"><div class="placeholder-text">
+        <i class="fas fa-image"></i>Ընտրեք շրջան և քաշ<br>նկարի ավտոմատ ցուցադրման համար
         </div></div>`;
         return;
     }
-    const imageUrl = productImages[selectedDistrict]?.[selectedWeight];
-    if(imageUrl) {
-        const img = document.createElement("img");
-        img.src = imageUrl;
-        img.alt = `${selectedDistrict} - ${selectedWeight}`;
-        container.appendChild(img);
-    } else {
-        container.innerHTML = "<p>Նկար չի գտնվել ընտրված ապրանքի համար</p>";
-    }
+    const imageUrl=productImages[selectedDistrict]?.[selectedWeight];
+    if(imageUrl){const img=document.createElement("img"); img.src=imageUrl; img.alt=`${selectedDistrict} - ${selectedWeight}`; container.appendChild(img);}
+    else container.innerHTML="<p>Նկար չի գտնվել ընտրված ապրանքի համար</p>";
 }
 
-async function verifyPayment() {
-    paymentStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Ստուգվում է…';
-    try {
-        const response = await fetch(`https://chainz.cryptoid.info/dash/api.dws?q=address&a=${DASH_ADDRESS}`);
+async function verifyPayment(){
+    paymentStatus.innerHTML='<i class="fas fa-spinner fa-spin"></i> Ստուգվում է…';
+    try{
+        const response=await fetch(`https://chainz.cryptoid.info/dash/api.dws?q=address&a=${DASH_ADDRESS}`);
         if(!response.ok) throw new Error("API-ին հասանելի չէ");
-        const txs = await response.text();
-        if(txs.includes(finalAmount.toFixed(6).toString())) {
-            paymentVerified = true;
-            paymentStatus.className = 'status-indicator status-paid';
-            paymentStatus.innerHTML = '<i class="fas fa-check"></i> Վճարվել է';
+        const txs=await response.text();
+        if(txs.includes(finalAmount.toFixed(6).toString())){
+            paymentVerified=true;
+            paymentStatus.className='status-indicator status-paid';
+            paymentStatus.innerHTML='<i class="fas fa-check"></i> Վճարվել է';
         } else {
-            paymentStatus.className = 'status-indicator status-failed';
-            paymentStatus.innerHTML = '<i class="fas fa-times"></i> Չի վճարվել';
+            paymentStatus.className='status-indicator status-failed';
+            paymentStatus.innerHTML='<i class="fas fa-times"></i> Չի վճարվել';
         }
-    } catch(err) {
-        paymentStatus.className = 'status-indicator status-failed';
-        paymentStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Սխալ՝ ${err.message}`;
+    }catch(err){
+        paymentStatus.className='status-indicator status-failed';
+        paymentStatus.innerHTML=`<i class="fas fa-exclamation-triangle"></i> Սխալ՝ ${err.message}`;
     }
 }
 
-document.addEventListener("DOMContentLoaded", ()=>{ verifyBtn.disabled = true; });
+document.addEventListener("DOMContentLoaded",()=>{verifyBtn.disabled=true;});
 </script>
 
 </body>
