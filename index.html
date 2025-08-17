@@ -69,15 +69,41 @@
     </div>
 
     <!-- Step 3 -->
-    <div class="step">
-        <div class="step-title"><div class="step-number">3</div>Dash Blockchain վճարում</div>
-        <div class="wallet-section">
-            <div class="wallet-address" id="walletAddress" onclick="copyAddress()">XdUMLEKoxfGVSDYBEQVRyyjbWGq4aGAB83</div>
-            <div class="payment-amount" id="paymentAmount">$0</div>
-            <button class="verify-btn" id="verifyBtn" onclick="verifyPayment()" disabled>Ստուգել վճարումը</button>
-            <div class="status status-pending" id="paymentStatus">Սպասում է վճարման</div>
-        </div>
-    </div>
+    function verifyPayment() {
+    if (!selectedDistrict || !selectedWeight || selectedPrice === 0) {
+        showNotification('❌ Ընտրեք շրջան և ապրանք');
+        return;
+    }
+
+    showLoading(true);
+
+    // Simulate blockchain verification
+    setTimeout(() => {
+        showLoading(false);
+        
+        const statusElement = document.getElementById('paymentStatus');
+        const verifyBtn = document.getElementById('verifyBtn');
+        
+        statusElement.className = 'status status-verified';
+        statusElement.textContent = '✅ Վճարումը հաստատված է';
+        verifyBtn.textContent = '✅ Վճարումը հաջող է';
+        verifyBtn.disabled = true;
+        
+        showNotification('🎉 Վճարումը հաջողությամբ հաստատվեց!');
+        
+        // Send data to Telegram bot
+        if (window.Telegram && window.Telegram.WebApp) {
+            const orderData = {
+                district: selectedDistrict,
+                weight: selectedWeight,
+                price: selectedPrice,
+                paymentVerified: true,
+                timestamp: new Date().toISOString()
+            };
+            window.Telegram.WebApp.sendData(JSON.stringify(orderData));
+        }
+    }, 2000);
+}
 
     <!-- Step 4 -->
     <div class="step">
