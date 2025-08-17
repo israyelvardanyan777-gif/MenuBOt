@@ -3,22 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UraXot Mini | Admin Demo</title>
+<title>UraXot Mini | Admin Protected</title>
 <style>
-body { background: #000; color: #fff; font-family: sans-serif; padding: 16px;}
-.container { max-width: 400px; margin: auto;}
-.header { text-align: center; margin-bottom: 24px;}
-.logo { font-size: 24px; font-weight: bold; color: #00d4aa;}
-.step { background: #111; padding: 16px; border-radius: 12px; margin-bottom: 16px;}
-.step-title { font-weight: 600; margin-bottom: 12px;}
-.grid { display: grid; gap: 8px; grid-template-columns: repeat(2, 1fr);}
-.btn { padding: 12px; border-radius: 8px; background:#222; text-align:center; cursor:pointer;}
-.btn.selected { background:#00d4aa; color:#000;}
-.image-container { margin-top:12px; text-align:center;}
-.product-image { width:100%; height:200px; object-fit:cover; border-radius:8px;}
-.admin-panel { background:#222; padding:12px; border-radius:8px; margin-top:16px; display:none;}
-input { width:100%; padding:8px; margin-bottom:8px; border-radius:6px; border:none;}
-button { width:100%; padding:12px; border:none; border-radius:8px; background:#00d4aa; color:#000; cursor:pointer;}
+body { background:#000; color:#fff; font-family:sans-serif; padding:16px; }
+.container { max-width:400px; margin:auto; }
+.header { text-align:center; margin-bottom:24px; }
+.logo { font-size:24px; font-weight:bold; color:#00d4aa; margin-bottom:8px; }
+.step { background:#111; padding:16px; border-radius:12px; margin-bottom:16px; }
+.step-title { font-weight:600; margin-bottom:12px; }
+.grid { display:grid; gap:8px; grid-template-columns:repeat(2,1fr); }
+.btn { padding:12px; border-radius:8px; background:#222; text-align:center; cursor:pointer; transition:0.2s; }
+.btn:hover { background:#333; }
+.btn.selected { background:#00d4aa; color:#000; }
+.image-container { margin-top:12px; text-align:center; }
+.product-image { width:100%; height:200px; object-fit:cover; border-radius:8px; }
+.admin-panel { background:#222; padding:12px; border-radius:8px; margin-bottom:16px; display:none; }
+input { width:100%; padding:8px; margin-bottom:8px; border-radius:6px; border:none; }
+button { width:100%; padding:12px; border:none; border-radius:8px; background:#00d4aa; color:#000; cursor:pointer; }
 </style>
 </head>
 <body>
@@ -27,7 +28,7 @@ button { width:100%; padding:12px; border:none; border-radius:8px; background:#0
     <div class="logo">UraXot Mini</div>
   </div>
 
-  <!-- Admin login -->
+  <!-- Admin Login -->
   <div class="step">
     <div class="step-title">Admin Login</div>
     <input type="password" id="adminPassword" placeholder="Գաղտնաբառ">
@@ -60,7 +61,7 @@ button { width:100%; padding:12px; border:none; border-radius:8px; background:#0
 </div>
 
 <script>
-const adminPass = "1234"; // այստեղ դրված է օրինակ գաղտնաբառը
+const adminPass = "1234"; // Գաղտնաբառը փոխարինիր քո համար
 let isAdmin = false;
 let selectedDistrict = "";
 let selectedWeight = "";
@@ -74,7 +75,7 @@ function loginAdmin() {
   if(pass === adminPass) {
     isAdmin = true;
     document.getElementById("adminPanel").style.display = "block";
-    alert("Admin ռեժիմը բացվեց!");
+    alert("✅ Admin ռեժիմը բացվեց!");
   } else {
     alert("❌ Խորագրությունը սխալ է");
   }
@@ -106,6 +107,7 @@ function renderDistricts() {
     districtGrid.appendChild(btn);
   });
 }
+
 function selectDistrict(d, btn) {
   selectedDistrict = d;
   document.querySelectorAll("#districtGrid .btn").forEach(b => b.classList.remove("selected"));
@@ -113,6 +115,7 @@ function selectDistrict(d, btn) {
   renderProducts();
   updateImage();
 }
+
 function renderProducts() {
   const productGrid = document.getElementById("productGrid");
   productGrid.innerHTML = "";
@@ -125,12 +128,14 @@ function renderProducts() {
     productGrid.appendChild(btn);
   });
 }
+
 function selectProduct(w, btn) {
   selectedWeight = w;
   document.querySelectorAll("#productGrid .btn").forEach(b => b.classList.remove("selected"));
   btn.classList.add("selected");
   updateImage();
 }
+
 function updateImage() {
   const container = document.getElementById("imageContainer");
   if(selectedDistrict && selectedWeight) {
